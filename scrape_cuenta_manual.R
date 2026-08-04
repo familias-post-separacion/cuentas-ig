@@ -18,24 +18,24 @@
 
 # ---- 1. CONFIGURACIÓN EDITABLE DE ESTA CUENTA -------------------------------
 
-# Cuenta: abogadavaleriaoportus
+# Cuenta: abogadavaleriaoportus 156/444
 
-URL_PERFIL       <- "https://www.instagram.com/abogadavaleriaoportus?igsh=MTdpZXV6dzI0MXJrNA=="
-NOMBRE_CUENTA    <- "abogadavaleriaoportus"
-NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "abogadavaleriaoportus")
+#URL_PERFIL       <- "https://www.instagram.com/abogadavaleriaoportus?igsh=MTdpZXV6dzI0MXJrNA=="
+#NOMBRE_CUENTA    <- "abogadavaleriaoportus"
+#NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "abogadavaleriaoportus")
 
 # archivos que deberían aparecer en files luego de ejectuar el código completo
-ARCHIVO_SALIDA   <- glue::glue("instagram_abogadavaleriaoportus.csv")
-ARCHIVO_PROGRESO <- glue::glue("progreso_abogadavaleriaoportus.rds")
+#ARCHIVO_SALIDA   <- glue::glue("instagram_abogadavaleriaoportus.csv")
+#ARCHIVO_PROGRESO <- glue::glue("progreso_abogadavaleriaoportus.rds")
 
 
 # Cuenta: nomashijosrehenes.cl
 
-#URL_PERFIL       <- "https://www.instagram.com/nomashijosrehenes.cl/"
-#NOMBRE_CUENTA    <- "nomashijosrehenes.cl"
-#NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "nomashijosrehenes.cl")
-#ARCHIVO_SALIDA   <- glue::glue("instagram_nomashijosrehenes.cl.csv")
-#ARCHIVO_PROGRESO <- glue::glue("progreso_nomashijosrehenes.cl.rds")
+URL_PERFIL       <- "https://www.instagram.com/nomashijosrehenes.cl/"
+NOMBRE_CUENTA    <- "nomashijosrehenes.cl"
+NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "nomashijosrehenes.cl")
+ARCHIVO_SALIDA   <- glue::glue("instagram_nomashijosrehenes.cl.csv")
+ARCHIVO_PROGRESO <- glue::glue("progreso_nomashijosrehenes.cl.rds")
 
 # Cuenta: vanessaferrerradovic
 
