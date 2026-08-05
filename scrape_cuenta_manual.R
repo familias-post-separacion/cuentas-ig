@@ -29,21 +29,21 @@
 #ARCHIVO_PROGRESO <- glue::glue("progreso_abogadavaleriaoportus.rds")
 
 
-# Cuenta: nomashijosrehenes.cl
+# Cuenta: nomashijosrehenes.cl 180/254
 
-URL_PERFIL       <- "https://www.instagram.com/nomashijosrehenes.cl/"
-NOMBRE_CUENTA    <- "nomashijosrehenes.cl"
-NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "nomashijosrehenes.cl")
-ARCHIVO_SALIDA   <- glue::glue("instagram_nomashijosrehenes.cl.csv")
-ARCHIVO_PROGRESO <- glue::glue("progreso_nomashijosrehenes.cl.rds")
+#URL_PERFIL       <- "https://www.instagram.com/nomashijosrehenes.cl/"
+#NOMBRE_CUENTA    <- "nomashijosrehenes.cl"
+#NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "nomashijosrehenes.cl")
+#ARCHIVO_SALIDA   <- glue::glue("instagram_nomashijosrehenes.cl.csv")
+#ARCHIVO_PROGRESO <- glue::glue("progreso_nomashijosrehenes.cl.rds")
 
-# Cuenta: vanessaferrerradovic
+# Cuenta: vanessaferrerradovic 144/749
 
-#URL_PERFIL       <- "https://www.instagram.com/vanessaferrerradovic/"
-#NOMBRE_CUENTA    <- "vanessaferrerradovic"
-#NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "vanessaferrerradovic")
-#ARCHIVO_SALIDA   <- glue::glue("instagram_vanessaferrerradovic.csv")
-#ARCHIVO_PROGRESO <- glue::glue("progreso_vanessaferrerradovic.rds")
+URL_PERFIL       <- "https://www.instagram.com/vanessaferrerradovic/"
+NOMBRE_CUENTA    <- "vanessaferrerradovic"
+NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "vanessaferrerradovic")
+ARCHIVO_SALIDA   <- glue::glue("instagram_vanessaferrerradovic.csv")
+ARCHIVO_PROGRESO <- glue::glue("progreso_vanessaferrerradovic.rds")
 
 # Cuenta: chile_in_justo_
 
