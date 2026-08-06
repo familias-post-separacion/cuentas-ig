@@ -10,12 +10,12 @@
 # 6. Rellenar con las cookies solicitadas en el código
 
 cookies_instagram <- c(
-  sessionid  = "47239652619%3AlmxwAoWd13GoQs%3A4%3AAYhPZlHKDxBkEg7WmsK-bSjYTNYVIfm9_eJKQhgL9w",
-  ds_user_id = "47239652619",
-  csrftoken  = "BXZCk7vcJ6fu_cGwaOolgR",
-  mid        = "anDvUAALAAGLuaHGFO_6qA8DO_vs",
-  ig_did     = "DC473D05-4F77-49C1-AE53-580ED104FA20",
-  datr       = "UO9waoK--H5btUvu-AFuHXlB"
+  sessionid  = "",
+  ds_user_id = "",
+  csrftoken  = "",
+  mid        = "",
+  ig_did     = "",
+  datr       = ""
 )
 
 # IMPORTANTE: Cuando subas tu avance a la branch de github recuerda subir este código vacío (sin las cookies que pegaste de tu sesión)
