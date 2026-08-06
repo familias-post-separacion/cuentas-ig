@@ -55,15 +55,15 @@
 #ARCHIVO_SALIDA   <- glue::glue("instagram_chile_in_justo_.csv")
 #ARCHIVO_PROGRESO <- glue::glue("progreso_chile_in_justo_.rds")
 
-# Cuenta: hombresmaltratadoschile 144/277
+# Cuenta: hombresmaltratadoschile 168/277
 
-URL_PERFIL       <- "https://www.instagram.com/hombresmaltratadoschile/"
-NOMBRE_CUENTA    <- "hombresmaltratadoschile"
-NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "hombresmaltratadoschile")
-ARCHIVO_SALIDA   <- glue::glue("instagram_hombresmaltratadoschile.csv")
-ARCHIVO_PROGRESO <- glue::glue("progreso_hombresmaltratadoschile.rds")
+#URL_PERFIL       <- "https://www.instagram.com/hombresmaltratadoschile/"
+#NOMBRE_CUENTA    <- "hombresmaltratadoschile"
+#NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "hombresmaltratadoschile")
+#ARCHIVO_SALIDA   <- glue::glue("instagram_hombresmaltratadoschile.csv")
+#ARCHIVO_PROGRESO <- glue::glue("progreso_hombresmaltratadoschile.rds")
 
-# Cuenta: abogadachilena /60
+# Cuenta: abogadachilena  LISTO 47 publicaciones
 
 #URL_PERFIL       <- "https://www.instagram.com/abogadachilena?igsh=Ymg3NzUzNXp4OTQ4"
 #NOMBRE_CUENTA    <- "abogadachilena"
@@ -73,11 +73,11 @@ ARCHIVO_PROGRESO <- glue::glue("progreso_hombresmaltratadoschile.rds")
 
 # Cuenta: ps_perito_caroval /247
 
-#URL_PERFIL       <- "https://www.instagram.com/ps_perito_caroval/"
-#NOMBRE_CUENTA    <- "ps_perito_caroval"
-#NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "ps_perito_caroval")
-#ARCHIVO_SALIDA   <- glue::glue("instagram_ps_perito_caroval.csv")
-#ARCHIVO_PROGRESO <- glue::glue("progreso_ps_perito_caroval.rds")
+URL_PERFIL       <- "https://www.instagram.com/ps_perito_caroval/"
+NOMBRE_CUENTA    <- "ps_perito_caroval"
+NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "ps_perito_caroval")
+ARCHIVO_SALIDA   <- glue::glue("instagram_ps_perito_caroval.csv")
+ARCHIVO_PROGRESO <- glue::glue("progreso_ps_perito_caroval.rds")
 
 config <- config_cuenta_default
 
