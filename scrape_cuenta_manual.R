@@ -18,7 +18,9 @@
 
 # ---- 1. CONFIGURACIÓN EDITABLE DE ESTA CUENTA -------------------------------
 
-# Cuenta: abogadavaleriaoportus 156/444
+#total 773/2382
+
+# Cuenta: abogadavaleriaoportus 159/444
 
 #URL_PERFIL       <- "https://www.instagram.com/abogadavaleriaoportus?igsh=MTdpZXV6dzI0MXJrNA=="
 #NOMBRE_CUENTA    <- "abogadavaleriaoportus"
@@ -37,15 +39,15 @@
 #ARCHIVO_SALIDA   <- glue::glue("instagram_nomashijosrehenes.cl.csv")
 #ARCHIVO_PROGRESO <- glue::glue("progreso_nomashijosrehenes.cl.rds")
 
-# Cuenta: vanessaferrerradovic 144/749
+# Cuenta: vanessaferrerradovic 146/749
 
-URL_PERFIL       <- "https://www.instagram.com/vanessaferrerradovic/"
-NOMBRE_CUENTA    <- "vanessaferrerradovic"
-NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "vanessaferrerradovic")
-ARCHIVO_SALIDA   <- glue::glue("instagram_vanessaferrerradovic.csv")
-ARCHIVO_PROGRESO <- glue::glue("progreso_vanessaferrerradovic.rds")
+#URL_PERFIL       <- "https://www.instagram.com/vanessaferrerradovic/"
+#NOMBRE_CUENTA    <- "vanessaferrerradovic"
+#NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "vanessaferrerradovic")
+#ARCHIVO_SALIDA   <- glue::glue("instagram_vanessaferrerradovic.csv")
+#ARCHIVO_PROGRESO <- glue::glue("progreso_vanessaferrerradovic.rds")
 
-# Cuenta: chile_in_justo_
+# Cuenta: chile_in_justo_ 156/351 ----
 
 #URL_PERFIL       <- "https://www.instagram.com/chile_in_justo_/"
 #NOMBRE_CUENTA    <- "chile_in_justo_"
@@ -53,15 +55,15 @@ ARCHIVO_PROGRESO <- glue::glue("progreso_vanessaferrerradovic.rds")
 #ARCHIVO_SALIDA   <- glue::glue("instagram_chile_in_justo_.csv")
 #ARCHIVO_PROGRESO <- glue::glue("progreso_chile_in_justo_.rds")
 
-# Cuenta: hombresmaltratadoschile
+# Cuenta: hombresmaltratadoschile 144/277
 
-#URL_PERFIL       <- "https://www.instagram.com/hombresmaltratadoschile/"
-#NOMBRE_CUENTA    <- "hombresmaltratadoschile"
-#NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "hombresmaltratadoschile")
-#ARCHIVO_SALIDA   <- glue::glue("instagram_hombresmaltratadoschile.csv")
-#ARCHIVO_PROGRESO <- glue::glue("progreso_hombresmaltratadoschile.rds")
+URL_PERFIL       <- "https://www.instagram.com/hombresmaltratadoschile/"
+NOMBRE_CUENTA    <- "hombresmaltratadoschile"
+NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "hombresmaltratadoschile")
+ARCHIVO_SALIDA   <- glue::glue("instagram_hombresmaltratadoschile.csv")
+ARCHIVO_PROGRESO <- glue::glue("progreso_hombresmaltratadoschile.rds")
 
-# Cuenta: abogadachilena
+# Cuenta: abogadachilena /60
 
 #URL_PERFIL       <- "https://www.instagram.com/abogadachilena?igsh=Ymg3NzUzNXp4OTQ4"
 #NOMBRE_CUENTA    <- "abogadachilena"
@@ -69,7 +71,7 @@ ARCHIVO_PROGRESO <- glue::glue("progreso_vanessaferrerradovic.rds")
 #ARCHIVO_SALIDA   <- glue::glue("instagram_abogadachilena.csv")
 #ARCHIVO_PROGRESO <- glue::glue("progreso_abogadachilena.rds")
 
-# Cuenta: ps_perito_caroval
+# Cuenta: ps_perito_caroval /247
 
 #URL_PERFIL       <- "https://www.instagram.com/ps_perito_caroval/"
 #NOMBRE_CUENTA    <- "ps_perito_caroval"
