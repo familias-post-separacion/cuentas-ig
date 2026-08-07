@@ -20,7 +20,7 @@
 
 #total 773/2382
 
-# Cuenta: abogadavaleriaoportus 159/444
+# Cuenta: abogadavaleriaoportus 163/444
 
 #URL_PERFIL       <- "https://www.instagram.com/abogadavaleriaoportus?igsh=MTdpZXV6dzI0MXJrNA=="
 #NOMBRE_CUENTA    <- "abogadavaleriaoportus"
@@ -31,7 +31,7 @@
 #ARCHIVO_PROGRESO <- glue::glue("progreso_abogadavaleriaoportus.rds")
 
 
-# Cuenta: nomashijosrehenes.cl 180/254
+# Cuenta: nomashijosrehenes.cl 181/254
 
 #URL_PERFIL       <- "https://www.instagram.com/nomashijosrehenes.cl/"
 #NOMBRE_CUENTA    <- "nomashijosrehenes.cl"
@@ -71,13 +71,13 @@
 #ARCHIVO_SALIDA   <- glue::glue("instagram_abogadachilena.csv")
 #ARCHIVO_PROGRESO <- glue::glue("progreso_abogadachilena.rds")
 
-# Cuenta: ps_perito_caroval /247
+# Cuenta: ps_perito_caroval 144/247
 
-URL_PERFIL       <- "https://www.instagram.com/ps_perito_caroval/"
-NOMBRE_CUENTA    <- "ps_perito_caroval"
-NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "ps_perito_caroval")
-ARCHIVO_SALIDA   <- glue::glue("instagram_ps_perito_caroval.csv")
-ARCHIVO_PROGRESO <- glue::glue("progreso_ps_perito_caroval.rds")
+#URL_PERFIL       <- "https://www.instagram.com/ps_perito_caroval/"
+#NOMBRE_CUENTA    <- "ps_perito_caroval"
+#NOMBRE_CUENTA_ARCHIVO <- gsub("[/\\\\]+", "", "ps_perito_caroval")
+#ARCHIVO_SALIDA   <- glue::glue("instagram_ps_perito_caroval.csv")
+#ARCHIVO_PROGRESO <- glue::glue("progreso_ps_perito_caroval.rds")
 
 config <- config_cuenta_default
 
