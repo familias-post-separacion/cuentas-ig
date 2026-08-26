@@ -60,7 +60,6 @@ df <- df %>%
        #  show.col.prc = TRUE
        )
   
-  
 ```
 
 ### Cuentas con menos publicaciones
@@ -163,6 +162,8 @@ datos_grafico$anio <- as.character(datos_grafico$anio)
 #| echo: false
 #| warning: false
 #| message: false
+#| fig-height: 5
+#| fig-width: 8
 
 # se filtra solo porlas cuentas con mas de 300 publicaciones ------------------
   d0 <- df %>% filter(cuenta %in% c( "abogadavaleriaoportus",
@@ -249,6 +250,10 @@ datos_grafico$anio <- as.character(datos_grafico$anio)
 
 # filtrar para solo año 2025 --------------------------------------------------
 d1 <- df%>%filter(anio == 2025)
+
+d1$mes <- factor(d1$mes,
+                 levels = sprintf("%02d", 1:12),
+                 labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
  
   
 # tabla bivariada -------------------------------------------------------------
@@ -266,40 +271,540 @@ d1 <- df%>%filter(anio == 2025)
 #| echo: false
 #| warning: false
 #| message: false
+#| fig-height: 6
+#| fig-width: 7
 
-
-
-# se filtra solo porlas cuentas con menos de 300 publicaciones ----------------
+# se filtra solo por las cuentas con menos de 300 publicaciones ---------------
 d1 <- df %>% filter(cuenta %in% c( "abogadachilena",
                                   "unpapaconsciente",
                                    "chile_in_justo",
                                   "hombresmaltratadoschile",
                                   "nomashijosrehenes.cl",
                                   "ps_perito_caroval"
-                                  
-                                  
-                                   ))
+                                   )) %>%
+  filter(anio == 2025)
 
 # objeto calculado para usar en el grafico ggplot -----------------------------
-  datos_grafico <- d1 %>%
-    count(mes, cuenta) %>%
-    group_by(mes) %>%
-    mutate(
-      porcentaje = n / sum(n),
-      etiqueta = paste0(
-        n, "\n(",
-        scales::percent(porcentaje, accuracy = 0.1),
-        ")"
-      )
+datos_grafico <- d1 %>%
+  count(mes, cuenta) %>%
+  group_by(mes) %>%
+  mutate(
+    porcentaje = n / sum(n),
+    etiqueta = paste0(
+      n, "\n(",
+      scales::percent(porcentaje, accuracy = 0.1),
+      ")"
     )
+  )
 
+# convertir a character los meses, con nombres --------------------------------
+datos_grafico$mes <- factor(datos_grafico$mes,
+                             levels = sprintf("%02d", 1:12),
+                             labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
 
-
-
-# convertir a character los meses --------------------------------------------- 
-datos_grafico$mes <- as.character(datos_grafico$mes)
-
+# grafico ----------------------------------------------------------------------
+ggplot(datos_grafico,
+       aes(x = mes, y = n, fill = cuenta)) +
   
+  geom_col(
+    position = position_dodge(width = 0.8, preserve = "single"),
+    width = 0.6
+  ) +
+  
+  geom_text(
+    aes(label = n),
+    position = position_dodge(width = 0.8, preserve = "single"),
+    vjust = -0.3,
+    size = 3
+  ) +
+  
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.10))
+  ) +
+  
+  # TITULOS DEL GRÁFICO 
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Mes",
+    y = "Frecuencia",
+    fill = "Cuenta",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  # Para definir colores del grafico. DEBEN SER LA MISMA CANTIDAD POR CUENTA 
+  scale_fill_manual(values = c("#D8B4F8", 
+                               "#3F074A", 
+                               "#BF382C", 
+                               "#AEB7BF",
+                               "#44322F", 
+                               "#999999")) +
+  
+  theme_minimal(base_size = 13) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
 ```
 
 ### Cuentas con más publicaciones
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 6
+#| fig-width: 8
+
+# se filtra solo por las cuentas con mas de 300 publicaciones -----------------
+d1b <- df %>% filter(cuenta %in% c( "abogadavaleriaoportus",
+                                    "falsas_denuncias_chile",
+                                    "fundacion_crianza_compartida",
+                                    "ni1diamas",
+                                    "padres_con_derechochile",
+                                    "vanessaferrerradovic"
+                                   )) %>%
+  filter(anio == 2025)
+
+# objeto calculado para usar en el grafico ggplot -----------------------------
+datos_grafico <- d1b %>%
+  count(mes, cuenta) %>%
+  group_by(mes) %>%
+  mutate(
+    porcentaje = n / sum(n),
+    etiqueta = paste0(
+      n, "\n(",
+      scales::percent(porcentaje, accuracy = 0.1),
+      ")"
+    )
+  )
+
+# convertir a character los meses, con nombres --------------------------------
+datos_grafico$mes <- factor(datos_grafico$mes,
+                             levels = sprintf("%02d", 1:12),
+                             labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
+
+# grafico ----------------------------------------------------------------------
+ggplot(datos_grafico,
+       aes(x = mes, y = n, fill = cuenta)) +
+  
+  geom_col(
+    position = position_dodge(width = 0.8, preserve = "single"),
+    width = 0.6
+  ) +
+  
+  geom_text(
+    aes(label = n),
+    position = position_dodge(width = 0.8, preserve = "single"),
+    vjust = -0.3,
+    size = 3
+  ) +
+  
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.10))
+  ) +
+  
+  # TITULOS DEL GRÁFICO 
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Mes",
+    y = "Frecuencia",
+    fill = "Cuenta",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  scale_fill_manual(values = c("#D8B4F8", 
+                               "#3F074A", 
+                               "#BF382C", 
+                               "#AEB7BF",
+                               "#44322F", 
+                               "#999999")) +
+  
+  theme_minimal(base_size = 13) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+## Publicaciones según meses del 2024
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+
+# filtrar para solo año 2025 --------------------------------------------------
+d1 <- df%>%filter(anio == 2024)
+
+d1$mes <- factor(d1$mes,
+                 levels = sprintf("%02d", 1:12),
+                 labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
+
+
+# tabla bivariada -------------------------------------------------------------
+sjt.xtab(d1$cuenta, d1$mes,
+         show.row.prc = TRUE,
+         #  show.col.prc = TRUE
+)
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 6
+#| fig-width: 12
+# se filtra solo por las cuentas con menos de 300 publicaciones ---------------
+d1 <- df %>% filter(anio == 2024)
+# objeto calculado para usar en el grafico ggplot -----------------------------
+datos_grafico <- d1 %>%
+  count(mes, cuenta) %>%
+  group_by(mes) %>%
+  mutate(
+    porcentaje = n / sum(n),
+    etiqueta = paste0(
+      n, "\n(",
+      scales::percent(porcentaje, accuracy = 0.1),
+      ")"
+    )
+  )
+# convertir a character los meses, con nombres --------------------------------
+datos_grafico$mes <- factor(datos_grafico$mes,
+                            levels = sprintf("%02d", 1:12),
+                            labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
+# grafico ----------------------------------------------------------------------
+ggplot(datos_grafico,
+       aes(x = mes, y = n, fill = cuenta)) +
+  
+  geom_col(
+    position = position_dodge(width = 0.8, preserve = "single"),
+    width = 0.6
+  ) +
+  
+  geom_text(
+    aes(label = n),
+    position = position_dodge(width = 0.8, preserve = "single"),
+    vjust = -0.3,
+    size = 3
+  ) +
+  
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.10))
+  ) +
+  
+  # TITULOS DEL GRÁFICO 
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Mes",
+    y = "Frecuencia",
+    fill = "Cuenta",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  # Para definir colores del grafico. DEBEN SER LA MISMA CANTIDAD POR CUENTA 
+  scale_fill_manual(values = c("#D8B4F8", 
+                               "#3F074A", 
+                               "#BF382C", 
+                               "#AEB7BF",
+                               "#44322F", 
+                               "#999999",
+                               "#569",
+                               "#986",
+                               "#167",
+                               "#572",
+                               "#847",
+                               "#183")) +
+  
+  theme_minimal(base_size = 13) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+## Publicaciones según meses del 2023
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+d1 <- df%>%filter(anio == 2023)
+
+d1$mes <- factor(d1$mes,
+                 levels = sprintf("%02d", 1:12),
+                 labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
+
+# tabla bivariada -------------------------------------------------------------
+sjt.xtab(d1$cuenta, d1$mes,
+         show.row.prc = TRUE,
+         #  show.col.prc = TRUE
+)
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 6
+#| fig-width: 11
+
+# se filtra solo por las cuentas con menos de 300 publicaciones ---------------
+d1 <- df %>% filter(anio == 2023)
+
+# objeto calculado para usar en el grafico ggplot -----------------------------
+datos_grafico <- d1 %>%
+  count(mes, cuenta) %>%
+  group_by(mes) %>%
+  mutate(
+    porcentaje = n / sum(n),
+    etiqueta = paste0(
+      n, "\n(",
+      scales::percent(porcentaje, accuracy = 0.1),
+      ")"
+    )
+  )
+
+# convertir a character los meses, con nombres --------------------------------
+datos_grafico$mes <- factor(datos_grafico$mes,
+                            levels = sprintf("%02d", 1:12),
+                            labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
+
+# grafico ----------------------------------------------------------------------
+ggplot(datos_grafico,
+       aes(x = mes, y = n, fill = cuenta)) +
+  
+  geom_col(
+    position = position_dodge(width = 0.8, preserve = "single"),
+    width = 0.6
+  ) +
+  
+  geom_text(
+    aes(label = n),
+    position = position_dodge(width = 0.8, preserve = "single"),
+    vjust = -0.3,
+    size = 3
+  ) +
+  
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.10))
+  ) +
+  
+  # TITULOS DEL GRÁFICO 
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Mes",
+    y = "Frecuencia",
+    fill = "Cuenta",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  # Para definir colores del grafico. DEBEN SER LA MISMA CANTIDAD POR CUENTA 
+  scale_fill_manual(values = c("#D8B4F8", 
+                               "#3F074A", 
+                               "#BF382C", 
+                               "#AEB7BF",
+                               "#44322F", 
+                               "#999999",
+                               "#569",
+                               "#986",
+                               "#167",
+                               "#572",
+                               "#847",
+                               "#183")) +
+  
+  theme_minimal(base_size = 13) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+## Publicaciones según meses del 2022
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+d1 <- df%>%filter(anio == 2022)
+
+d1$mes <- factor(d1$mes,
+                 levels = sprintf("%02d", 1:12),
+                 labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
+
+# tabla bivariada -------------------------------------------------------------
+sjt.xtab(d1$cuenta, d1$mes,
+         show.row.prc = TRUE,
+         #  show.col.prc = TRUE
+)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 6
+#| fig-width: 9
+
+d1 <- df %>% filter(anio == 2022)
+
+# objeto calculado para usar en el grafico ggplot -----------------------------
+datos_grafico <- d1 %>%
+  count(mes, cuenta) %>%
+  group_by(mes) %>%
+  mutate(
+    porcentaje = n / sum(n),
+    etiqueta = paste0(
+      n, "\n(",
+      scales::percent(porcentaje, accuracy = 0.1),
+      ")"
+    )
+  )
+
+# convertir a character los meses, con nombres --------------------------------
+datos_grafico$mes <- factor(datos_grafico$mes,
+                            levels = sprintf("%02d", 1:12),
+                            labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
+
+# grafico ----------------------------------------------------------------------
+ggplot(datos_grafico,
+       aes(x = mes, y = n, fill = cuenta)) +
+  
+  geom_col(
+    position = position_dodge(width = 0.8, preserve = "single"),
+    width = 0.6
+  ) +
+  
+  geom_text(
+    aes(label = n),
+    position = position_dodge(width = 0.8, preserve = "single"),
+    vjust = -0.3,
+    size = 3
+  ) +
+  
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.10))
+  ) +
+  
+  # TITULOS DEL GRÁFICO 
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Mes",
+    y = "Frecuencia",
+    fill = "Cuenta",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  # Para definir colores del grafico. DEBEN SER LA MISMA CANTIDAD POR CUENTA 
+  scale_fill_manual(values = c("#D8B4F8", 
+                               "#3F074A", 
+                               "#BF382C", 
+                               "#AEB7BF",
+                               "#44322F", 
+                               "#999999",
+                               "#569",
+                               "#986",
+                               "#167",
+                               "#572",
+                               "#847",
+                               "#183")) +
+  
+  theme_minimal(base_size = 13) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 6
+#| fig-width: 10
+
+# calcular el total de publicaciones (todas las cuentas) por mes y año -------
+datos_grafico <- df %>%
+  count(anio, mes, name = "n") %>%
+  group_by(anio, mes) %>%
+  summarise(total = sum(n), .groups = "drop")
+
+# convertir mes a factor con nombres en español -------------------------------
+datos_grafico$mes <- factor(datos_grafico$mes,
+                            levels = sprintf("%02d", 1:12),
+                            labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
+                                       "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
+
+# convertir anio a factor (para que cada año sea una linea/color distinta) ---
+datos_grafico$anio <- as.character(datos_grafico$anio)
+
+# grafico ----------------------------------------------------------------------
+ggplot(datos_grafico,
+       aes(x = mes, y = total, color = anio, group = anio)) +
+  
+  geom_line(linewidth = 1) +
+  
+  geom_point(size = 2) +
+  
+  geom_text(
+    aes(label = total),
+    vjust = -0.8,
+    size = 3,
+    show.legend = FALSE
+  ) +
+  
+  scale_y_continuous(
+    expand = expansion(mult = c(0.05, 0.15))
+  ) +
+  
+  # TITULOS DEL GRÁFICO 
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Mes",
+    y = "Total de publicaciones",
+    color = "Año",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  # Para definir colores del grafico. Ajusta según cuantos años tengas ---------
+scale_color_manual(values = c("#D8B4F8", 
+                              "#3F074A", 
+                              "#BF382C", 
+                              "#AEB7BF",
+                              "#44322F", 
+                              "#999999")) +
+  
+  theme_minimal(base_size = 13) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
