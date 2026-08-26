@@ -1,0 +1,310 @@
+---
+title: "Análisis cuentas de IG: Grupo 3"
+author: "Fondecyt Familias"
+fontsize: 12pt
+#bibliography: "../input/mini-proyecto.bib"
+#csl: "input/bib/apa6.csl"
+format:
+  html:
+    toc: true
+    toc-location: right
+    toc-depth: 6
+    toc-expand: 6
+    toc-title: Contenidos
+    number-sections: false
+    number-depth: 6
+    theme: 
+    - cosmo
+    title-block-banner: true
+    title-block-banner-color: "#9265A6"
+editor: visual
+lang: es
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+# cargar paquetes -------------------------------------------------------------
+pacman::p_load(readr, janitor, dplyr, ggplot2, purrr, knitr, kableExtra,
+               tidytext, tidyr, sjPlot, tidyverse,  scales, sjPlot, stargazer, 
+               texreg, haven, sjlabelled, summarytools, ggtext, ggpubr, 
+               hrbrthemes, stringr)
+
+# cargar datos ----------------------------------------------------------------
+df <- read_csv("dataset_unido.csv", show_col_types = FALSE)
+
+
+# separar por mes y año -------------------------------------------------------
+df <- df %>%
+  mutate(
+    anio = format(fecha, "%Y"),
+    mes  = format(fecha, "%m")
+  )
+
+
+```
+
+
+# Descriptivos 
+
+## Publicaciones según año 
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+  
+  sjt.xtab(df$cuenta, df$anio,
+         show.row.prc = TRUE,
+       #  show.col.prc = TRUE
+       )
+  
+  
+```
+
+
+
+### Cuentas con menos publicaciones 
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+
+# se filtra solo porlas cuentas con menos de 300 publicaciones ----------------
+d <- df %>% filter(cuenta %in% c( "abogadachilena",
+                                  "unpapaconsciente",
+                                   "chile_in_justo",
+                                  "hombresmaltratadoschile",
+                                  "nomashijosrehenes.cl",
+                                  "ps_perito_caroval"
+                                  
+                                  
+                                   ))
+
+# objeto calculado para usar en el grafico ggplot -----------------------------
+  datos_grafico <- d %>%
+    count(anio, cuenta) %>%
+    group_by(anio) %>%
+    mutate(
+      porcentaje = n / sum(n),
+      etiqueta = paste0(
+        n, "\n(",
+        scales::percent(porcentaje, accuracy = 0.1),
+        ")"
+      )
+    )
+  
+  
+# convertir a character los años ----------------------------------------------
+datos_grafico$anio <- as.character(datos_grafico$anio)
+
+
+# grafico ---------------------------------------------------------------------
+  ggplot(datos_grafico,
+         aes(x = anio, y = n, fill = cuenta)) +
+    
+    geom_col(
+      position = position_dodge(width = 0.8, preserve = "single"),
+      width = 0.6
+    ) +
+    
+    geom_text(
+      aes(label = n), # tambien esta la opcion etiqueta
+      position = position_dodge(width = 0.8, preserve = "single"),
+      vjust = -0.3,# ajusta la posición verticual de la etiqueta en la barra
+   #   fontface = "bold"  # en caso de querer cambiar la apariencia
+    ) +
+    
+    scale_y_continuous(
+      limits = c(0, 300), # para defirnir min y max del eje y
+      breaks = c(0, 50, 100, 150, 200, 150, 300), # para definir las lineas de corte en el eje y
+      expand = expansion(mult = c(0, 0.10))
+    ) +
+    
+  # descomentar los siguientes argumentos en caso de querar voltear el grafico:
+    #coord_cartesian(xlim = c(0, 0)) +
+   # coord_flip() +
+    
+  # TITULOS DEL GRÁFICO 
+    labs(
+      title = "",
+      subtitle = "",
+      x = "Año",
+      y = "Frecuencia",
+      fill = "Cuenta",
+      caption = "Fuente: Elaboración propia."
+    ) +
+   # Para definir colores del grafico. DEBEN SER LA MISMA CANTIDAD POR CUENTA 
+    scale_fill_manual(values = c("#D8B4F8", 
+                                 "#3F074A", 
+                                 "#BF382C", 
+                                 "#AEB7BF",
+                                 "#44322F", 
+                                 "#999999")) + # 6 cuentas, 6 colores 
+    
+    theme_minimal(base_size = 13) +
+    
+    theme(
+      plot.title = element_text(face = "bold", size = 16),
+      plot.subtitle = element_text(size = 12),
+      legend.position = "bottom" # para definir el lugar de la leyenda 
+    )
+  
+  
+  
+
+  
+```
+### Cuentas con más publicaciones 
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+# se filtra solo porlas cuentas con mas de 300 publicaciones ------------------
+  d0 <- df %>% filter(cuenta %in% c( "abogadavaleriaoportus",
+                                    "falsas_denuncias_chile",
+                                    "fundacion_crianza_compartida",
+                                    "ni1diamas",
+                                    "padres_con_derechochile",
+                                    "vanessaferrerradovic"
+                                   
+                                   ))
+
+# objeto calculado para usar en el grafico ggplot -----------------------------
+  datos_grafico <- d0 %>%
+    count(anio, cuenta) %>%
+    group_by(anio) %>%
+    mutate(
+      porcentaje = n / sum(n),
+      etiqueta = paste0(
+        n, "\n(",
+        scales::percent(porcentaje, accuracy = 0.1),
+        ")"
+      )
+    )
+
+# convertir a character los años ----------------------------------------------   
+datos_grafico$anio <- as.character(datos_grafico$anio)
+
+
+# grafico ---------------------------------------------------------------------
+  ggplot(datos_grafico,
+         aes(x = anio, y = n, fill = cuenta)) +
+    
+    geom_col(
+      position = position_dodge(width = 0.8, preserve = "single"),
+      width = 0.6
+    ) +
+    
+    geom_text(
+      aes(label = n), # tambien esta la opcion etiqueta 
+      position = position_dodge(width = 0.8, preserve = "single"),
+      vjust = -0.3, # ajusta la posición verticual de la etiqueta en la barra
+   #   fontface = "bold"  # en caso de querer cambiar la apariencia
+    ) +
+    
+    scale_y_continuous(
+      limits = c(0, 1000), # para defirnir min y max del eje y
+      breaks = c(0, 250, 500, 750, 1000), # para definir las lineas de corte en el eje y
+      expand = expansion(mult = c(0, 0.10))
+    ) +
+    
+    # TITULOS DEL GRÁFICO 
+    labs(
+      title = "",
+      subtitle = "",
+      x = "Año",
+      y = "Frecuencia",
+      fill = "Cuenta",
+      caption = "Fuente: Elaboración propia."
+    ) +
+    
+     # Para definir colores del grafico. DEBEN SER LA MISMA CANTIDAD POR CUENTA 
+    scale_fill_manual(values = c("#D8B4F8", 
+                                 "#3F074A", 
+                                 "#BF382C", 
+                                 "#AEB7BF",
+                                 "#44322F", 
+                                 "#999999")) + # 6 cuentas, 6 colores 
+    theme_minimal(base_size = 13) +
+    
+    theme(
+      plot.title = element_text(face = "bold", size = 16),
+      plot.subtitle = element_text(size = 12),
+      legend.position = "bottom" # para definir el lugar de la leyenda 
+    )
+```
+
+
+
+## Publicaciones según meses del 2025 
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+ 
+
+# filtrar para solo año 2025 --------------------------------------------------
+d1 <- df%>%filter(anio == 2025)
+ 
+  
+# tabla bivariada -------------------------------------------------------------
+  sjt.xtab(d1$cuenta, d1$mes,
+         show.row.prc = TRUE,
+       #  show.col.prc = TRUE
+       )
+  
+  
+```
+
+
+### Cuentas con menos publicaciones
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+
+
+# se filtra solo porlas cuentas con menos de 300 publicaciones ----------------
+d1 <- df %>% filter(cuenta %in% c( "abogadachilena",
+                                  "unpapaconsciente",
+                                   "chile_in_justo",
+                                  "hombresmaltratadoschile",
+                                  "nomashijosrehenes.cl",
+                                  "ps_perito_caroval"
+                                  
+                                  
+                                   ))
+
+# objeto calculado para usar en el grafico ggplot -----------------------------
+  datos_grafico <- d1 %>%
+    count(mes, cuenta) %>%
+    group_by(mes) %>%
+    mutate(
+      porcentaje = n / sum(n),
+      etiqueta = paste0(
+        n, "\n(",
+        scales::percent(porcentaje, accuracy = 0.1),
+        ")"
+      )
+    )
+
+
+
+
+# convertir a character los meses --------------------------------------------- 
+datos_grafico$mes <- as.character(datos_grafico$mes)
+
+  
+```
+
+
+### Cuentas con más publicaciones
