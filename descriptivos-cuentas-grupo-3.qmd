@@ -46,11 +46,9 @@ df <- df %>%
 
 ```
 
+# Descriptivos
 
-# Descriptivos 
-
-## Publicaciones según año 
-
+## Publicaciones según año
 
 ```{r}
 #| echo: false
@@ -65,9 +63,7 @@ df <- df %>%
   
 ```
 
-
-
-### Cuentas con menos publicaciones 
+### Cuentas con menos publicaciones
 
 ```{r}
 #| echo: false
@@ -160,7 +156,8 @@ datos_grafico$anio <- as.character(datos_grafico$anio)
 
   
 ```
-### Cuentas con más publicaciones 
+
+### Cuentas con más publicaciones
 
 ```{r}
 #| echo: false
@@ -242,9 +239,8 @@ datos_grafico$anio <- as.character(datos_grafico$anio)
     )
 ```
 
+## Publicaciones según meses del 2025
 
-
-## Publicaciones según meses del 2025 
 ```{r}
 #| echo: false
 #| warning: false
@@ -264,8 +260,8 @@ d1 <- df%>%filter(anio == 2025)
   
 ```
 
-
 ### Cuentas con menos publicaciones
+
 ```{r}
 #| echo: false
 #| warning: false
@@ -305,6 +301,5 @@ datos_grafico$mes <- as.character(datos_grafico$mes)
 
   
 ```
-
 
 ### Cuentas con más publicaciones
