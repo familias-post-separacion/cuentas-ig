@@ -219,6 +219,7 @@ tabla_detalle_interactiva <- function(datos, pageLength = 10, orden_col = 3,
       options = list(
         pageLength = pageLength,
         autoWidth = TRUE,
+        scrollX = TRUE,
         dom = 'ftip',
         order = list(list(orden_col, "desc")),
         language = list(
