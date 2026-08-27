@@ -28,9 +28,7 @@ lang: es
 
 # cargar paquetes -------------------------------------------------------------
 pacman::p_load(readr, janitor, dplyr, ggplot2, purrr, knitr, kableExtra,
-               tidytext, tidyr, sjPlot, tidyverse,  scales, sjPlot, stargazer, 
-               texreg, haven, sjlabelled, summarytools, ggtext, ggpubr, 
-               hrbrthemes, stringr)
+tidytext, tidyr, sjPlot, tidyverse,  scales, sjPlot, stargazer, texreg, haven, sjlabelled, summarytools, ggtext, ggpubr, hrbrthemes, stringr, ggwordcloud, tm)
 
 # cargar datos ----------------------------------------------------------------
 df <- read_csv("dataset_unido.csv", show_col_types = FALSE)
@@ -806,5 +804,212 @@ scale_color_manual(values = c("#D8B4F8",
     plot.subtitle = element_text(size = 12),
     legend.position = "bottom",
     axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+## Palabras más comunes por cuenta
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 8
+#| fig-width: 10
+
+# stopwords en español --------------------------------------------------------
+# tidytext no trae stopwords en español por defecto, así que usamos las de tm
+
+library(tm)
+
+stopwords_es <- tibble(word = tm::stopwords("spanish"))
+
+# tokenizar: separar el texto de las descripciones en palabras individuales --
+palabras <- df %>%
+  select(cuenta, descripcion) %>%
+  unnest_tokens(word, descripcion) %>%
+  filter(!word %in% stopwords_es$word) %>%   # quitar palabras vacías
+  filter(!str_detect(word, "^[0-9]+$")) %>%  # quitar números sueltos
+  filter(str_length(word) > 2)               # quitar palabras muy cortas (ej. "el", "un")
+
+# contar frecuencia de palabras por cuenta -------------------------------------
+frecuencia_palabras <- palabras %>%
+  count(cuenta, word, sort = TRUE) %>%
+  group_by(cuenta) %>%
+  slice_max(n, n = 10, with_ties = FALSE) %>%   # top 10 palabras por cuenta
+  ungroup()
+
+# grafico: top 10 palabras mas frecuentes por cuenta --------------------------
+ggplot(frecuencia_palabras,
+       aes(x = reorder_within(word, n, cuenta), y = n, fill = cuenta)) +
+  
+  geom_col(show.legend = FALSE) +
+  
+  coord_flip() +
+  
+  scale_x_reordered() +
+  
+  facet_wrap(~ cuenta, scales = "free", ncol = 3) +
+  
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Palabra",
+    y = "Frecuencia",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  theme_minimal(base_size = 11) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    strip.text = element_text(face = "bold", size = 9)
+  )
+```
+
+## Exclusión de palabras
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 8
+#| fig-width: 10
+
+# stopwords en español --------------------------------------------------------
+# tidytext no trae stopwords en español por defecto, así que usamos las de tm
+
+stopwords_es <- tibble(word = tm::stopwords("spanish"))
+
+# palabras a excluir --------
+palabras_excluir <- tibble(word = c("abogadachilena", "años", "chile", "abogada", "abogadavaleriaoportus", "cada", "puede", "ser", "sino", "munilascondes", "lazcano", "crianzacompartidachile", "fundación", "día", "hoy", "ni1diamas", "ser", "www.nomashijosrehenes.cl", "padresconderechochile", "link", "comenta", "comparte", "padresconderecho", "viral", "gracias", "fundacioncrianzacompartida", "siempre", "vanessa","ferrer", "radovich", "valparaíso","programa", "ftv", "vanessaferrerdiputada", "distrito7", "valeria", "valerialazcano", "chilevision", "andreshernandez", "fundacion_crianza_compartida", "hrs", "canal", "plazatv","rodrigo", "piaggio", "marchant", "youtube", "compolvalpo", "instagram", "concón", "facebook", "ftv_cl", "niundiamas_"))
+
+# unir ambas listas de exclusion ------------------------------------
+stopwords_todas <- bind_rows(stopwords_es, palabras_excluir) %>%
+  distinct(word)
+
+# tokenizar: separar el texto de las descripciones en palabras individuales --
+palabras <- df %>%
+  select(cuenta, descripcion) %>%
+  unnest_tokens(word, descripcion) %>%
+  filter(!word %in% stopwords_todas$word) %>%   # quitar palabras vacías
+  filter(!str_detect(word, "^[0-9]+$")) %>%  # quitar números sueltos
+  filter(str_length(word) > 2)               # quitar palabras muy cortas (ej. "el", "un")
+
+# contar frecuencia de palabras por cuenta -------------------------------------
+frecuencia_palabras <- palabras %>%
+  count(cuenta, word, sort = TRUE) %>%
+  group_by(cuenta) %>%
+  slice_max(n, n = 10, with_ties = FALSE) %>%   # top 10 palabras por cuenta
+  ungroup()
+
+# grafico: top 10 palabras mas frecuentes por cuenta --------------------------
+ggplot(frecuencia_palabras,
+       aes(x = reorder_within(word, n, cuenta), y = n, fill = cuenta)) +
+  
+  geom_col(show.legend = FALSE) +
+  
+  coord_flip() +
+  
+  scale_x_reordered() +
+  
+  facet_wrap(~ cuenta, scales = "free", ncol = 3) +
+  
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Palabra",
+    y = "Frecuencia",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  theme_minimal(base_size = 11) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    strip.text = element_text(face = "bold", size = 9)
+  )
+```
+
+## Nube de palabras
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 8
+#| fig-width: 8
+
+frecuencia_combinada <- frecuencia_palabras %>%
+  group_by(word) %>%
+  summarise(
+    n_total   = sum(n),           # suma de frecuencias entre cuentas
+    n_cuentas = n_distinct(cuenta) # en cuantas cuentas distintas aparece esta palabra
+  ) %>%
+  ungroup()
+
+# grafico: nube de palabras combinada ------------------------------------------
+ggplot(frecuencia_combinada,
+       aes(label = word, size = n_cuentas)) +
+  
+  geom_text_wordcloud(
+    rm_outside = TRUE,
+    shape = "circle",
+    color = "#3F074A"
+  ) +
+  
+  scale_size_area(max_size = 15) +
+  
+  labs(
+    title = "",
+    subtitle = "",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  theme_minimal(base_size = 11)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 6
+#| fig-width: 9
+
+# quedarse solo con las 10 palabras mas frecuentes ------------
+top10_combinada <- frecuencia_combinada %>%
+  slice_max(n_cuentas, n = 10, with_ties = FALSE)
+
+# grafico: top 10 palabras segun cuantas cuentas distintas las tienen --------
+ggplot(top10_combinada,
+       aes(x = reorder(word, n_cuentas), y = n_cuentas)) +
+  
+  geom_col(fill = "#3F074A", width = 0.6) +
+  
+  geom_text(
+    aes(label = n_cuentas),
+    hjust = -0.3,
+    size = 3
+  ) +
+  
+  coord_flip() +
+  
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.15)),
+    breaks = scales::breaks_pretty()
+  ) +
+  
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Palabra",
+    y = "N° de cuentas en cuyo top 10 aparece",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  theme_minimal(base_size = 12) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12)
   )
 ```
