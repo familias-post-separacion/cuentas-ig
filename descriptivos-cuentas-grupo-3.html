@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -13,10 +13,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -34,10 +37,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="descriptivos-cuentas-grupo-3_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="descriptivos-cuentas-grupo-3_files/libs/quarto-html/anchor.min.js"></script>
 <link href="descriptivos-cuentas-grupo-3_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="descriptivos-cuentas-grupo-3_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="descriptivos-cuentas-grupo-3_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="descriptivos-cuentas-grupo-3_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="descriptivos-cuentas-grupo-3_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="descriptivos-cuentas-grupo-3_files/libs/bootstrap/bootstrap-03bd07e4458e7f118467a4d2741871ca.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="descriptivos-cuentas-grupo-3_files/libs/bootstrap/bootstrap-7a64aac221d0e7887d1852076594ef70.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <style>
 
       .quarto-title-block .quarto-title-banner h1,
@@ -94,6 +97,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#cuentas-con-menos-publicaciones" id="toc-cuentas-con-menos-publicaciones" class="nav-link" data-scroll-target="#cuentas-con-menos-publicaciones">Cuentas con menos publicaciones</a></li>
   <li><a href="#cuentas-con-más-publicaciones" id="toc-cuentas-con-más-publicaciones" class="nav-link" data-scroll-target="#cuentas-con-más-publicaciones">Cuentas con más publicaciones</a></li>
+  <li><a href="#tamaño-de-las-cuentas-según-cantidad-de-publicaciones" id="toc-tamaño-de-las-cuentas-según-cantidad-de-publicaciones" class="nav-link" data-scroll-target="#tamaño-de-las-cuentas-según-cantidad-de-publicaciones">Tamaño de las cuentas según cantidad de publicaciones</a></li>
   </ul></li>
   <li><a href="#publicaciones-según-meses-del-2025" id="toc-publicaciones-según-meses-del-2025" class="nav-link" data-scroll-target="#publicaciones-según-meses-del-2025">Publicaciones según meses del 2025</a>
   <ul>
@@ -105,7 +109,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#publicaciones-según-meses-del-2022" id="toc-publicaciones-según-meses-del-2022" class="nav-link" data-scroll-target="#publicaciones-según-meses-del-2022">Publicaciones según meses del 2022</a></li>
   <li><a href="#palabras-más-comunes-por-cuenta" id="toc-palabras-más-comunes-por-cuenta" class="nav-link" data-scroll-target="#palabras-más-comunes-por-cuenta">Palabras más comunes por cuenta</a></li>
   <li><a href="#exclusión-de-palabras" id="toc-exclusión-de-palabras" class="nav-link" data-scroll-target="#exclusión-de-palabras">Exclusión de palabras</a></li>
-  <li><a href="#nube-de-palabras" id="toc-nube-de-palabras" class="nav-link" data-scroll-target="#nube-de-palabras">Nube de palabras</a></li>
+  <li><a href="#nube-de-palabras-top-10-de-cada-cuenta" id="toc-nube-de-palabras-top-10-de-cada-cuenta" class="nav-link" data-scroll-target="#nube-de-palabras-top-10-de-cada-cuenta">Nube de palabras (top 10 de cada cuenta)</a></li>
+  <li><a href="#nube-de-palablas-general" id="toc-nube-de-palablas-general" class="nav-link" data-scroll-target="#nube-de-palablas-general">Nube de palablas general</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -277,6 +282,18 @@ ul.task-list li input[type="checkbox"] {
 <div>
 <figure class="figure">
 <p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="tamaño-de-las-cuentas-según-cantidad-de-publicaciones" class="level3">
+<h3 class="anchored" data-anchor-id="tamaño-de-las-cuentas-según-cantidad-de-publicaciones">Tamaño de las cuentas según cantidad de publicaciones</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -541,7 +558,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -553,7 +570,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -782,7 +799,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="1152"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -925,7 +942,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="1056"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1056"></p>
 </figure>
 </div>
 </div>
@@ -1051,7 +1068,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="864"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="864"></p>
 </figure>
 </div>
 </div>
@@ -1060,7 +1077,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1072,7 +1089,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1084,19 +1101,19 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="nube-de-palabras" class="level2">
-<h2 class="anchored" data-anchor-id="nube-de-palabras">Nube de palabras</h2>
+<section id="nube-de-palabras-top-10-de-cada-cuenta" class="level2">
+<h2 class="anchored" data-anchor-id="nube-de-palabras-top-10-de-cada-cuenta">Nube de palabras (top 10 de cada cuenta)</h2>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -1105,7 +1122,28 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="864"></p>
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="nube-de-palablas-general" class="level2">
+<h2 class="anchored" data-anchor-id="nube-de-palablas-general">Nube de palablas general</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="descriptivos-cuentas-grupo-3_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="864"></p>
 </figure>
 </div>
 </div>

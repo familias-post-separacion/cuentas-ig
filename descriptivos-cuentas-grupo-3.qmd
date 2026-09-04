@@ -28,7 +28,7 @@ lang: es
 
 # cargar paquetes -------------------------------------------------------------
 pacman::p_load(readr, janitor, dplyr, ggplot2, purrr, knitr, kableExtra,
-tidytext, tidyr, sjPlot, tidyverse,  scales, sjPlot, stargazer, texreg, haven, sjlabelled, summarytools, ggtext, ggpubr, hrbrthemes, stringr, ggwordcloud, tm)
+tidytext, tidyr, sjPlot, tidyverse,  scales, sjPlot, stargazer, texreg, haven, sjlabelled, summarytools, ggtext, ggpubr, hrbrthemes, stringr, ggwordcloud, tm, packcircles)
 
 # cargar datos ----------------------------------------------------------------
 df <- read_csv("dataset_unido.csv", show_col_types = FALSE)
@@ -236,6 +236,61 @@ datos_grafico$anio <- as.character(datos_grafico$anio)
       plot.subtitle = element_text(size = 12),
       legend.position = "bottom" # para definir el lugar de la leyenda 
     )
+```
+
+### Tamaño de las cuentas según cantidad de publicaciones
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 9
+#| fig-width: 8
+
+# total de publicaciones por cuenta --------------------------------------------
+totales_cuenta <- df %>%
+  count(cuenta, name = "total")
+
+# calcular el layout de circle packing -----------------------------------------
+packing <- circleProgressiveLayout(totales_cuenta$total, sizetype = "area")
+
+# unir las coordenadas calculadas con los datos originales ---------------------
+totales_cuenta <- bind_cols(totales_cuenta, packing) %>%
+  mutate(id = row_number())
+
+# generar los puntos de cada circulo (para poder dibujarlos como poligono) ----
+datos_circulos <- circleLayoutVertices(packing, npoints = 100) %>%
+  left_join(totales_cuenta %>% select(id, cuenta, total), by = "id")
+
+# grafico -----------------------------------------------------------------------
+ggplot() +
+  
+  geom_polygon(
+    data = datos_circulos,
+    aes(x = x, y = y, group = id, fill = cuenta),
+    color = "white",
+    linewidth = 1,
+    show.legend = FALSE
+  ) +
+  
+  geom_text(
+    data = totales_cuenta,
+    aes(x = x, y = y, label = paste0(cuenta, "\n(", total, ")")),
+    size = 2.8
+  ) +
+  
+  coord_equal() +
+  
+  labs(
+    title = "",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  theme_void(base_size = 11) +
+  
+  theme(
+    plot.background = element_rect(fill = "#D6E4F0", color = NA)
+  )
 ```
 
 ## Publicaciones según meses del 2025
@@ -881,7 +936,7 @@ ggplot(frecuencia_palabras,
 stopwords_es <- tibble(word = tm::stopwords("spanish"))
 
 # palabras a excluir --------
-palabras_excluir <- tibble(word = c("abogadachilena", "años", "chile", "abogada", "abogadavaleriaoportus", "cada", "puede", "ser", "sino", "munilascondes", "lazcano", "crianzacompartidachile", "fundación", "día", "hoy", "ni1diamas", "ser", "www.nomashijosrehenes.cl", "padresconderechochile", "link", "comenta", "comparte", "padresconderecho", "viral", "gracias", "fundacioncrianzacompartida", "siempre", "vanessa","ferrer", "radovich", "valparaíso","programa", "ftv", "vanessaferrerdiputada", "distrito7", "valeria", "valerialazcano", "chilevision", "andreshernandez", "fundacion_crianza_compartida", "hrs", "canal", "plazatv","rodrigo", "piaggio", "marchant", "youtube", "compolvalpo", "instagram", "concón", "facebook", "ftv_cl", "niundiamas_"))
+palabras_excluir <- tibble(word = c("abogadachilena", "años", "chile", "abogada", "abogadavaleriaoportus", "cada", "puede", "ser", "sino", "munilascondes", "lazcano", "crianzacompartidachile", "fundación", "día", "hoy", "ni1diamas", "ser", "www.nomashijosrehenes.cl", "padresconderechochile", "link", "comenta", "comparte", "padresconderecho", "viral", "gracias", "fundacioncrianzacompartida", "siempre", "vanessa","ferrer", "radovich", "valparaíso","programa", "ftv", "vanessaferrerdiputada", "distrito7", "valeria", "valerialazcano", "chilevision", "andreshernandez", "fundacion_crianza_compartida", "hrs", "canal", "plazatv","rodrigo", "piaggio", "marchant", "youtube", "compolvalpo", "instagram", "concón", "facebook", "ftv_cl", "niundiamas_", "ni1diamas_", "twitter", "ind"))
 
 # unir ambas listas de exclusion ------------------------------------
 stopwords_todas <- bind_rows(stopwords_es, palabras_excluir) %>%
@@ -930,7 +985,7 @@ ggplot(frecuencia_palabras,
   )
 ```
 
-## Nube de palabras
+## Nube de palabras (top 10 de cada cuenta)
 
 ```{r}
 #| echo: false
@@ -1003,6 +1058,86 @@ ggplot(top10_combinada,
     subtitle = "",
     x = "Palabra",
     y = "N° de cuentas en cuyo top 10 aparece",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  theme_minimal(base_size = 12) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12)
+  )
+```
+
+## Nube de palablas general
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 8
+#| fig-width: 8
+
+frecuencia_combinada <- frecuencia_palabras %>%
+  group_by(word) %>%
+  summarise(n_total   = sum(n)) %>%
+  ungroup()
+
+# grafico: nube de palabras combinada ------------------------------------------
+ggplot(frecuencia_combinada,
+       aes(label = word, size = n_total)) +
+  
+  geom_text_wordcloud(
+    rm_outside = TRUE,
+    shape = "circle",
+    color = "#3F074A"
+  ) +
+  
+  scale_size_area(max_size = 15) +
+  
+  labs(
+    title = "Palabras más frecuentes",
+    subtitle = "",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  theme_minimal(base_size = 11)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 6
+#| fig-width: 9
+
+# quedarse solo con las 10 palabras mas frecuentes (por n_total) --------------
+top10_total <- frecuencia_combinada %>%
+  slice_max(n_total, n = 10, with_ties = FALSE)
+# grafico: top 10 palabras segun frecuencia total ------------------------------
+ggplot(top10_total,
+       aes(x = reorder(word, n_total), y = n_total)) +
+  
+  geom_col(fill = "#3F074A", width = 0.6) +
+  
+  geom_text(
+    aes(label = n_total),
+    hjust = -0.3,
+    size = 3
+  ) +
+  
+  coord_flip() +
+  
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.15)),
+    breaks = scales::breaks_pretty()
+  ) +
+  
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Palabra",
+    y = "frecuencia",
     caption = "Fuente: Elaboración propia."
   ) +
   
