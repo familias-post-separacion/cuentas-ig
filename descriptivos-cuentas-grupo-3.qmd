@@ -1260,3 +1260,112 @@ ggplot(datos_grafico_emociones,
     axis.text.x = element_text(angle = 45, hjust = 1)
   )
 ```
+
+### Palabras más frecuentes y sus emociones predominantes
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 6
+#| fig-width: 10
+
+# tokenizar conservando la emocion de cada publicacion -------------------------
+palabras_con_emocion <- emociones %>%
+  select(post_id, cuenta, descripcion, emotion_etiqueta) %>%
+  unnest_tokens(word, descripcion) %>%
+  filter(!word %in% stopwords_todas$word) %>%
+  filter(!str_detect(word, "^[0-9]+$")) %>%
+  filter(str_length(word) > 2)
+
+# quedarse solo con las publicaciones que contienen alguna de las top 10 -------
+top10_palabras <- top10_total$word   # o top10_combinada$word, segun cual hayas usado
+
+palabras_top10_emocion <- palabras_con_emocion %>%
+  filter(word %in% top10_palabras)
+
+# contar, para cada palabra, cuantas publicaciones tuvo cada emocion -----------
+datos_grafico_palabra_emocion <- palabras_top10_emocion %>%
+  distinct(post_id, word, emotion_etiqueta) %>%   # evita contar 2 veces si la palabra se repite en el mismo post
+  count(word, emotion_etiqueta, name = "n") %>%
+  group_by(word) %>%
+  mutate(porcentaje = n / sum(n)) %>%
+  ungroup()
+
+# grafico: distribucion de emociones por palabra (barras apiladas 100%) -------
+ggplot(datos_grafico_palabra_emocion,
+       aes(x = reorder(word, n, sum), y = porcentaje, fill = emotion_etiqueta)) +
+  
+  geom_col(position = "fill", width = 0.7) +
+  
+  coord_flip() +
+  
+  scale_y_continuous(
+    labels = scales::percent_format(accuracy = 1),
+    expand = expansion(mult = c(0, 0))
+  ) +
+  
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Palabra",
+    y = "Porcentaje de publicaciones",
+    fill = "Emoción",
+    caption = "Fuente: Elaboración propia."
+  ) +
+  
+  theme_minimal(base_size = 12) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom"
+  )
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-height: 6
+#| fig-width: 9
+
+# contar palabras separando "anger" del resto de las emociones -----------------
+conteo_rabia_vs_resto <- palabras_con_emocion %>%
+  distinct(post_id, word, emotion_etiqueta) %>%
+  mutate(grupo = if_else(emotion_etiqueta == "anger", "anger", "resto")) %>%
+  count(grupo, word) %>%
+  pivot_wider(names_from = grupo, values_from = n, values_fill = 0)
+
+# calcular log-odds ratio: que tan mas frecuente es la palabra en anger --------
+# se suma 1 a todo (suavizado) para evitar dividir por cero
+total_anger <- sum(conteo_rabia_vs_resto$anger) + nrow(conteo_rabia_vs_resto)
+total_resto <- sum(conteo_rabia_vs_resto$resto) + nrow(conteo_rabia_vs_resto)
+
+log_odds_rabia <- conteo_rabia_vs_resto %>%
+  mutate(
+    prop_anger = (anger + 1) / total_anger,
+    prop_resto = (resto + 1) / total_resto,
+    log_odds   = log(prop_anger / prop_resto)
+  ) %>%
+  filter(anger >= 3) %>%              # evita palabras que aparecieron por casualidad 1-2 veces
+  slice_max(log_odds, n = 10, with_ties = FALSE)
+
+# grafico -----------------------------------------------------------------------
+ggplot(log_odds_rabia,
+       aes(x = reorder(word, log_odds), y = log_odds)) +
+  
+  geom_col(fill = "#BF382C", width = 0.6) +
+  
+  coord_flip() +
+  
+  labs(
+    title = "",
+    x = "Palabra",
+    y = "Asociación con rabia (log-odds ratio)",
+    caption = "Fuente: Elaboración propia. Valores más altos = más específicos de 'rabia'.",
+    subtitle = "Palabras que aparecen desproporcionadamente más en publicaciones de rabia"
+  ) +
+  
+  theme_minimal(base_size = 12)
+```
