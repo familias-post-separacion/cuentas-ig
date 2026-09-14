@@ -28,12 +28,14 @@ lang: es
 
 # cargar paquetes -------------------------------------------------------------
 pacman::p_load(readr, janitor, dplyr, ggplot2, purrr, knitr, kableExtra,
-tidytext, tidyr, sjPlot, tidyverse,  scales, sjPlot, stargazer, texreg, haven, sjlabelled, summarytools, ggtext, ggpubr, hrbrthemes, stringr, ggwordcloud, tm, packcircles)
+tidytext, tidyr, sjPlot, tidyverse,  scales, sjPlot, stargazer, texreg, haven, sjlabelled, summarytools, ggtext, ggpubr, hrbrthemes, stringr, ggwordcloud, tm, packcircles, DT)
 
 # cargar datos ----------------------------------------------------------------
 df <- read_csv("dataset_unido.csv", show_col_types = FALSE)
 
 emociones <- read_csv("analisis_emocion_odio_ironia.csv", show_col_types = FALSE)
+
+hate_speach <- read_csv("hate_speach.csv", show_col_types = FALSE)
 
 # separar por mes y año -------------------------------------------------------
 df <- df %>%
@@ -43,6 +45,12 @@ df <- df %>%
   )
 
 emociones <- emociones %>%
+   mutate(
+       anio = format(fecha, "%Y"),
+    mes  = format(fecha, "%m")
+   )
+
+hate_speach <- hate_speach %>%
    mutate(
        anio = format(fecha, "%Y"),
     mes  = format(fecha, "%m")
@@ -1368,4 +1376,81 @@ ggplot(log_odds_rabia,
   ) +
   
   theme_minimal(base_size = 12)
+```
+
+## Discurso de odio
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+tabla_detalle_interactiva <- function(datos, pageLength = 10, orden_col = 0) {
+  if (nrow(datos) == 0) {
+    cat("_No hay publicaciones para este panel._\n\n")
+    return(invisible(NULL))
+  }
+  if (knitr::is_html_output()) {
+    DT::datatable(
+      datos,
+      rownames = FALSE,
+      options = list(
+        pageLength = pageLength,
+        autoWidth = TRUE,
+        scrollX = TRUE,
+        dom = 'ftip',
+        order = list(list(orden_col, "desc")),
+        language = list(
+          search = "Buscar:",
+          info = "Mostrando _START_ a _END_ de _TOTAL_",
+          paginate = list(previous = "Anterior", `next` = "Siguiente"),
+          zeroRecords = "Sin resultados"
+        )
+      )
+    )
+  } else {
+    datos %>%
+      kableExtra::kbl(booktabs = TRUE, longtable = TRUE) %>%
+      kableExtra::kable_styling(latex_options = c("striped", "repeat_header"), full_width = TRUE)
+  }
+}
+
+hate_speach %>%
+  transmute(
+    Cuenta = cuenta,
+    Año = anio,
+    Descripción = descripcion,
+    Sujeto = sujeto,
+    Etiquetas = hate_speech_etiquetas,
+    Emoción = emotion_etiqueta
+  ) %>%
+  tabla_detalle_interactiva(orden_col = 0)
+
+```
+
+## Frecuencia de sujetos
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+hate_speach %>%
+  separate_rows(sujeto, sep = ",\\s*") %>%
+  count(sujeto, sort = TRUE) %>%
+  ggplot(aes(x = reorder(sujeto, n), y = n)) +
+  geom_col(fill = "#8B0000") +
+  geom_text(aes(label = n), hjust = -0.2, size = 3.5) +
+  coord_flip() +
+  labs(
+    title = "Frecuencia de discurso de odio por sujeto",
+    x = NULL,
+    y = "Número de publicaciones"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    plot.title = element_text(face = "bold")
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15)))
 ```
