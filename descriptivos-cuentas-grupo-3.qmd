@@ -258,7 +258,7 @@ datos_grafico$anio <- as.character(datos_grafico$anio)
 #| warning: false
 #| message: false
 #| fig-height: 9
-#| fig-width: 8
+#| fig-width: 10
 
 # total de publicaciones por cuenta --------------------------------------------
 totales_cuenta <- df %>%
